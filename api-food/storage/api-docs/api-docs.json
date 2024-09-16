@@ -1,0 +1,451 @@
+{
+    "openapi": "3.0.0",
+    "info": {
+        "title": "V4 Company | Backend Challenge 20230105",
+        "description": "API para utilizar os dados do projeto Open Food Facts, fornecendo informações nutricionais dos produtos.",
+        "version": "1.0.0"
+    },
+    "paths": {
+        "/api/login": {
+            "post": {
+                "tags": [
+                    "Autenticação"
+                ],
+                "summary": "Autenticar o usuário e gerar o JWT",
+                "operationId": "c42ee1328d1ec9b5b3941878e9c56632",
+                "requestBody": {
+                    "required": true,
+                    "content": {
+                        "application/json": {
+                            "schema": {
+                                "properties": {
+                                    "email": {
+                                        "type": "string",
+                                        "example": "test@example.com"
+                                    },
+                                    "password": {
+                                        "type": "string",
+                                        "example": "pwd_test"
+                                    }
+                                },
+                                "type": "object"
+                            }
+                        }
+                    }
+                },
+                "responses": {
+                    "200": {
+                        "description": "Login realizado com sucesso, retorna o JWT",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "properties": {
+                                        "access_token": {
+                                            "type": "string",
+                                            "example": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9..."
+                                        },
+                                        "token_type": {
+                                            "type": "string",
+                                            "example": "bearer"
+                                        },
+                                        "expires_in": {
+                                            "type": "integer",
+                                            "example": 3600
+                                        }
+                                    },
+                                    "type": "object"
+                                }
+                            }
+                        }
+                    },
+                    "401": {
+                        "description": "Credenciais inválidas."
+                    }
+                }
+            }
+        },
+        "/api/": {
+            "get": {
+                "tags": [
+                    "Healthcheck"
+                ],
+                "summary": "Obter detalhes da API",
+                "operationId": "fa6ae95a8173b5e7907c1a887678ecf7",
+                "responses": {
+                    "200": {
+                        "description": "Detalhes da API recuperados com sucesso.",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "properties": {
+                                        "db_connected": {
+                                            "type": "boolean",
+                                            "example": true
+                                        },
+                                        "cron_last_run": {
+                                            "type": "string",
+                                            "example": "Awaiting execution..."
+                                        },
+                                        "uptime": {
+                                            "type": "string",
+                                            "example": "1 hour ago"
+                                        },
+                                        "memory_usage": {
+                                            "type": "string",
+                                            "example": "12.5 MB"
+                                        }
+                                    },
+                                    "type": "object"
+                                }
+                            }
+                        }
+                    },
+                    "500": {
+                        "description": "Erro ao recuperar os detalhes da API."
+                    }
+                },
+                "security": [
+                    {
+                        "bearerAuth": []
+                    }
+                ]
+            }
+        },
+        "/api/products": {
+            "get": {
+                "tags": [
+                    "Produtos"
+                ],
+                "summary": "Listar todos os produtos com paginação",
+                "operationId": "b7adbf8d2da385364be3bd1e52c5e132",
+                "responses": {
+                    "200": {
+                        "description": "Lista de produtos retornada com sucesso.",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "properties": {
+                                        "data": {
+                                            "type": "array",
+                                            "items": {
+                                                "properties": {
+                                                    "id": {
+                                                        "type": "integer",
+                                                        "example": 1
+                                                    },
+                                                    "name": {
+                                                        "type": "string",
+                                                        "example": "Produto 1"
+                                                    },
+                                                    "price": {
+                                                        "type": "number",
+                                                        "example": 100.5
+                                                    }
+                                                },
+                                                "type": "object"
+                                            }
+                                        },
+                                        "current_page": {
+                                            "type": "integer"
+                                        },
+                                        "total": {
+                                            "type": "integer"
+                                        },
+                                        "per_page": {
+                                            "type": "integer"
+                                        }
+                                    },
+                                    "type": "object"
+                                }
+                            }
+                        }
+                    },
+                    "500": {
+                        "description": "Erro ao listar produtos."
+                    },
+                    "401": {
+                        "description": "Sem autorização."
+                    }
+                },
+                "security": [
+                    {
+                        "bearerAuth": []
+                    }
+                ]
+            }
+        },
+        "/api/products/{code}": {
+            "get": {
+                "tags": [
+                    "Produtos"
+                ],
+                "summary": "Obter detalhes de um produto específico",
+                "operationId": "e3d3d01d8bf9c77c2f617e6d36ddba2b",
+                "parameters": [
+                    {
+                        "name": "code",
+                        "in": "path",
+                        "description": "Código do produto",
+                        "required": true,
+                        "schema": {
+                            "type": "string"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "Produto encontrado com sucesso.",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "properties": {
+                                        "id": {
+                                            "type": "integer",
+                                            "example": 1
+                                        },
+                                        "name": {
+                                            "type": "string",
+                                            "example": "Produto 1"
+                                        },
+                                        "price": {
+                                            "type": "number",
+                                            "example": 99.99
+                                        }
+                                    },
+                                    "type": "object"
+                                }
+                            }
+                        }
+                    },
+                    "404": {
+                        "description": "Produto não encontrado."
+                    },
+                    "500": {
+                        "description": "Erro ao recuperar o produto."
+                    },
+                    "401": {
+                        "description": "Sem autorização."
+                    }
+                },
+                "security": [
+                    {
+                        "bearerAuth": []
+                    }
+                ]
+            },
+            "put": {
+                "tags": [
+                    "Produtos"
+                ],
+                "summary": "Atualizar um produto",
+                "operationId": "837d8779bf600fc0f57d39bbdc95ce1f",
+                "parameters": [
+                    {
+                        "name": "code",
+                        "in": "path",
+                        "description": "Código do produto",
+                        "required": true,
+                        "schema": {
+                            "type": "string"
+                        }
+                    }
+                ],
+                "requestBody": {
+                    "required": true,
+                    "content": {
+                        "application/json": {
+                            "schema": {
+                                "properties": {
+                                    "product_name": {
+                                        "type": "string",
+                                        "example": "Nome de teste"
+                                    },
+                                    "url": {
+                                        "type": "string",
+                                        "example": "URL de teste"
+                                    }
+                                },
+                                "type": "object"
+                            }
+                        }
+                    }
+                },
+                "responses": {
+                    "200": {
+                        "description": "Produto atualizado com sucesso."
+                    },
+                    "404": {
+                        "description": "Produto não encontrado."
+                    },
+                    "500": {
+                        "description": "Erro ao atualizar o produto."
+                    },
+                    "401": {
+                        "description": "Sem autorização."
+                    }
+                },
+                "security": [
+                    {
+                        "bearerAuth": []
+                    }
+                ]
+            },
+            "delete": {
+                "tags": [
+                    "Produtos"
+                ],
+                "summary": "Excluir um produto (mover para 'trash')",
+                "operationId": "24eed3e51ea7fe25d94ed34517109894",
+                "parameters": [
+                    {
+                        "name": "code",
+                        "in": "path",
+                        "description": "Código do produto",
+                        "required": true,
+                        "schema": {
+                            "type": "string"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "Produto movido para 'trash' com sucesso."
+                    },
+                    "404": {
+                        "description": "Produto não encontrado."
+                    },
+                    "500": {
+                        "description": "Erro ao mover o produto para 'trash'."
+                    },
+                    "401": {
+                        "description": "Sem autorização."
+                    }
+                },
+                "security": [
+                    {
+                        "bearerAuth": []
+                    }
+                ]
+            }
+        },
+        "/api/food/files": {
+            "get": {
+                "tags": [
+                    "Bônus"
+                ],
+                "summary": "Listar os arquivos disponíveis na Open Foods Facts",
+                "operationId": "2d212d2e6fa1a8ff696f3b6dbed7ebd9",
+                "responses": {
+                    "200": {
+                        "description": "Arquivos listados com sucesso."
+                    },
+                    "500": {
+                        "description": "Erro ao listar os arquivos da Open Food Facts."
+                    },
+                    "401": {
+                        "description": "Sem autorização."
+                    }
+                },
+                "security": [
+                    {
+                        "bearerAuth": []
+                    }
+                ]
+            }
+        },
+        "/api/food/import/{file}": {
+            "post": {
+                "tags": [
+                    "Bônus"
+                ],
+                "summary": "Importar um arquivo disponível na Open Foods Facts",
+                "operationId": "f48934c6d3e30418b2a832577dfe0603",
+                "parameters": [
+                    {
+                        "name": "file",
+                        "in": "path",
+                        "description": "Nome do arquivo",
+                        "required": true,
+                        "schema": {
+                            "type": "string"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "Arquivo importado com sucesso."
+                    },
+                    "404": {
+                        "description": "Arquivo não encontrado."
+                    },
+                    "500": {
+                        "description": "Erro ao importar o arquivo."
+                    },
+                    "401": {
+                        "description": "Sem autorização."
+                    }
+                },
+                "security": [
+                    {
+                        "bearerAuth": []
+                    }
+                ]
+            }
+        },
+        "/api/food/import/all/files": {
+            "post": {
+                "tags": [
+                    "Bônus"
+                ],
+                "summary": "Importar todos os arquivos disponíveis na Open Foods Facts",
+                "operationId": "206e2d368099edff94d778519d105597",
+                "responses": {
+                    "200": {
+                        "description": "Todos os arquivos foram importados com sucesso."
+                    },
+                    "404": {
+                        "description": "Arquivos não encontrados."
+                    },
+                    "500": {
+                        "description": "Erro ao importar todos os arquivos."
+                    },
+                    "401": {
+                        "description": "Sem autorização."
+                    }
+                },
+                "security": [
+                    {
+                        "bearerAuth": []
+                    }
+                ]
+            }
+        }
+    },
+    "components": {
+        "securitySchemes": {
+            "bearerAuth": {
+                "type": "http",
+                "bearerFormat": "JWT",
+                "scheme": "bearer"
+            }
+        }
+    },
+    "tags": [
+        {
+            "name": "Autenticação",
+            "description": "Endpoint para autenticação"
+        },
+        {
+            "name": "Healthcheck",
+            "description": "Detalhes da API"
+        },
+        {
+            "name": "Produtos",
+            "description": "Endpoints relacionados aos produtos"
+        },
+        {
+            "name": "Bônus",
+            "description": "Endpoints de integrações com Open Food Facts"
+        }
+    ]
+}

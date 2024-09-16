@@ -1,0 +1,13 @@
+version: "3"
+
+services:
+  laravel:
+    build: .
+    ports:
+      - "8222:80"
+    volumes:
+      - ./api-food/:/var/www/html
+    command: bash -c "php artisan schedule:work"
+
+volumes: 
+  mysql_data:
