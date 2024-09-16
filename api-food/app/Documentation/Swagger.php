@@ -75,7 +75,6 @@ class Swagger
      *     path="/api/",
      *     summary="Obter detalhes da API",
      *     tags={"Healthcheck"},
-     *     security={{"bearerAuth":{}}},
      *     @OA\Response(
      *         response=200,
      *         description="Detalhes da API recuperados com sucesso.",
