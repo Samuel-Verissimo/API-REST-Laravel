@@ -103,12 +103,7 @@
                     "500": {
                         "description": "Erro ao recuperar os detalhes da API."
                     }
-                },
-                "security": [
-                    {
-                        "bearerAuth": []
-                    }
-                ]
+                }
             }
         },
         "/api/products": {

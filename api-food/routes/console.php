@@ -2,4 +2,4 @@
 
 use Illuminate\Support\Facades\Schedule;
 
-Schedule::command('cron:openfood')->dailyAt(env('TIME_EXECUTE_CRON', '12:05'));
+Schedule::command('cron:openfood')->dailyAt(config('app.time_execute_cron'));

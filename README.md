@@ -54,8 +54,8 @@
 
 ## Configurações
 
-- **Cron**: A configuração do horário de execução do cron está no arquivo `.env` com a variável `TIME_EXECUTE_CRON`.
-- **Banco de Dados**: O projeto utiliza SQLite pela simplicidade. O arquivo de banco de dados pode ser encontrado em `api-food/database/database.sqlite`.
+- **Cron**: A configuração do horário de execução do cron está no arquivo `config/app.php` com a variável `time_execute_cron`, recomendado executar `php artisan config:clear && php artisan config:cache` após a atualização da mesma.
+- **Banco de Dados**: O projeto utiliza SQLite pela simplicidade. O arquivo de banco de dados pode ser encontrado em `api-food/database/database.sqlite`, utilizei também as `migrations` para a criação da tabela de produtos.
 - **Testes Unitários**: Para rodar os testes, execute:
    ```bash
    php artisan test
