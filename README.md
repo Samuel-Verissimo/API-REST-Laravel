@@ -1,27 +1,70 @@
 # Backend Challenge 20230105
 
-## Descrição 
-Esse projeto tem com o objetivo importar etc etc etc
+## Tecnologias Utilizadas
+- **Backend**: PHP (Laravel 11)
+- **Frontend**: Swagger (Documentação via Swagger UI)
+- **Banco de Dados**: SQLite
 
-## Tecnologias 
-- Backend: PHP - Laravel 11 
-- Frontend: Swagger Lib 
-- Banco de dados: SQLite
+## Como Rodar o Projeto
 
-## Como rodar o projeto? 
-1. Faça o clone do projeto
-2. Navegue até o diretório `api-food`, execute `docker-compose up --build -d` e aguarde até a conclusão
-3. Crie o arquivo `.env` com base em `.env.example` 
-4. Aguarde de 4 a 8 minutos, após a execução do container está sendo instalado as dependências necessárias
-5. Acesse a API em `http://localhost:8444/api/documentation` e pronto! =D
-6. Caso encontrar problemas, tente acessar o container e reiniciar o apache `service apache2 restart`
+### Usando Docker (Recomendado)
+1. Clone o repositório:
+   ```bash
+   git clone <URL_DO_REPOSITORIO>
+   ```
+2. Navegue até o diretório `api-food`:
+   ```bash
+   cd api-food
+   ```
+3. Construa e inicie os containers com Docker:
+   ```bash
+   docker-compose up --build -d
+   ```
+4. Copie o arquivo `.env.example` e renomeie-o para `.env`:
+   ```bash
+   cp .env.example .env
+   ```
+5. Aguarde de 4 a 8 minutos para que o Docker conclua a instalação das dependências necessárias.
+6. Acesse a documentação da API em [http://localhost:8444/api/documentation](http://localhost:8444/api/documentation).
+7. Se encontrar problemas, entre no container e reinicie o Apache manualmente:
+   ```bash
+   docker exec -it <nome_do_container> bash
+   service apache2 restart
+   ```
 
-## Plano B
-1. Caso tenha problemas para rodar com o Docker, basta ter o `PHP` e `Composer` instalado em sua máquina. 
-2. Navegue até o diretório `api-food`, execute `composer install && php artisan serve && php artisan schedule:work` 
-3. Acesse a API em `http://localhost:8444/api/documentation` e pronto! =D
+### Plano B: Sem Docker
+1. Caso tenha problemas com Docker, é necessário ter PHP e Composer instalados localmente.
+2. Navegue até o diretório `api-food`:
+   ```bash
+   cd api-food
+   ```
+3. Instale as dependências e inicie o servidor:
+   ```bash
+   composer install
+   php artisan serve
+   php artisan schedule:work
+   ```
+4. Acesse a API em [http://localhost:8444/api/documentation](http://localhost:8444/api/documentation).
 
-## Observações / Anotações
+## Observações e Anotações
 
->  V4 [Link](https://coodesh.com/pt/assessments/project/7cc0e28f-c9b9-4e2f-ad83-2b51f9b5feb4/intro)
->  This is a challenge by [Coodesh](https://coodesh.com/)
+1. As importações de produtos dos arquivos `.json` sempre processam as linhas de 1 a 100. Seria interessante alternar as importações para processar registros diferentes em execuções futuras.
+2. Foi adicionada uma regra de **insert ou update** no banco de dados: se o código do produto já existir, ele será atualizado em vez de inserido novamente.
+3. A API está integrada com Swagger para documentação, e algumas APIs bônus foram adicionadas para facilitar testes.
+
+## Configurações
+
+- **Cron**: A configuração do horário de execução do cron está no arquivo `.env` com a variável `TIME_EXECUTE_CRON`.
+- **Banco de Dados**: O projeto utiliza SQLite pela simplicidade. O arquivo de banco de dados pode ser encontrado em `api-food/database/database.sqlite`.
+- **Testes Unitários**: Para rodar os testes, execute:
+   ```bash
+   php artisan test
+   ```
+   Os testes estão localizados em `api-food/tests/Unit/ProductControllerTest.php`.
+- **JWT**: As APIs utilizam autenticação JWT. As credenciais de login podem ser encontradas no body da API de login.
+
+## Resultado Final
+
+![API](api.png)
+
+> Este é um desafio da [Coodesh](https://coodesh.com/)
