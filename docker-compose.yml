@@ -4,10 +4,10 @@ services:
   laravel:
     build: .
     ports:
-      - "8222:80"
+      - "8444:80"
     volumes:
       - ./api-food/:/var/www/html
-    command: bash -c "php artisan schedule:work"
+    command: bash -c "composer install && php artisan schedule:work"
 
 volumes: 
   mysql_data:
